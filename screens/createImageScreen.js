@@ -1,16 +1,32 @@
 import React, {useState} from 'react'
 import { View, Button, TextInput, ScrollView, StyleSheet } from 'react-native'
+import { db } from '../database/firebase'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 
 const createImageScreen = () => {
 
     const [state, setState] = useState({
         title:'',
         category:'',
-        description:''
+        description:'',
+        url:''
     })
 
     const handleChangeText = (data, value) => {
         setState({ ...state, [data]: value });
+    }
+
+    const addNewImage = async () => {
+        if(state.title === '' && state.url === ''){
+            alert("El campo título es obligatorio");
+        } else {
+            await addDoc(collection(db, "images"), {
+                title: state.title,
+                category: state.category,
+                description: state.description,
+                url: state.url
+            });
+        }
     }
 
     return (
@@ -24,18 +40,24 @@ const createImageScreen = () => {
             <View style={styles.inputGroup}>
                 <TextInput 
                     placeholder='Categoría'
-                    onChangeText={(value) => handleChangeText('title', value)}
+                    onChangeText={(value) => handleChangeText('category', value)}
                 />
             </View>
             <View style={styles.inputTextArea}>
                 <TextInput 
                     placeholder='Descripción' 
-                    onChangeText={(value) => handleChangeText('title', value)}
+                    onChangeText={(value) => handleChangeText('description', value)}
                     multiline={true} numberOfLines={8}
                 />
             </View>
+            <View style={styles.inputGroup}>
+                <TextInput 
+                    placeholder='Enlace'
+                    onChangeText={(value) => handleChangeText('url', value)}
+                />
+            </View>
             <View>
-                <Button title='Guardar Imagen'/>
+                <Button title='Guardar Imagen' onPress={() => addNewImage()}/>
             </View>
         </ScrollView>
         
