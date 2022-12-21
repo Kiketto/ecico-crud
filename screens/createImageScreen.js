@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import { View, Button, TextInput, ScrollView, StyleSheet } from 'react-native'
-import { db } from '../database/firebase'
+import firebase from "../database/firebase"
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 
-const createImageScreen = () => {
+const createImageScreen = (props) => {
 
     const [state, setState] = useState({
         title:'',
@@ -20,12 +20,17 @@ const createImageScreen = () => {
         if(state.title === '' && state.url === ''){
             alert("El campo título es obligatorio");
         } else {
-            await addDoc(collection(db, "images"), {
+            try {
+                await firebase.db.collection("images").add({
                 title: state.title,
                 category: state.category,
                 description: state.description,
                 url: state.url
             });
+            props.navigation.navigate('imagesList');
+            } catch (error) {
+                console.log(error);
+            } 
         }
     }
 

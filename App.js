@@ -12,10 +12,9 @@ import imageDetailScreen from './screens/imageDetailScreen';
 function MyStack(){
   return(
     <Stack.Navigator>
-      
-      <Stack.Screen name="createImageScreen" component={createImageScreen}></Stack.Screen>
-      <Stack.Screen name="imagesList" component={imagesList}></Stack.Screen>
-      <Stack.Screen name="imageDetailScreen" component={imageDetailScreen}></Stack.Screen>
+      <Stack.Screen name="imagesList" component={imagesList} options={{title: 'Lista de imagenes'}}></Stack.Screen>
+      <Stack.Screen name="createImageScreen" component={createImageScreen} options={{title: 'Creación de la imagen'}}></Stack.Screen>
+      <Stack.Screen name="imageDetailScreen" component={imageDetailScreen} options={{title: 'Detalles de la imagen'}}></Stack.Screen>
     </Stack.Navigator>
   )
 }
